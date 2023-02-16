@@ -36,7 +36,7 @@ namespace Profession
             this.graphics = graphics;
 
             // Instancing of managers
-            returnManager = new ReturnManager(this.Content);
+            returnManager = new ReturnManager(this.Content, this.graphics);
 
         }
 
@@ -44,7 +44,7 @@ namespace Profession
         {
             spriteBatch = new SpriteBatch(graphics.GraphicsDevice);
 
-            uiManager = new UiManager(this.spriteBatch);
+            uiManager = new UiManager(this.spriteBatch, graphics.GraphicsDevice);
         }
 
         public void LoadContent()
@@ -130,9 +130,10 @@ namespace Profession
         private SpriteBatch spriteBatch;
         private GraphicsDevice graphics;
 
-        public UiManager(SpriteBatch spriteBatch)
+        public UiManager(SpriteBatch spriteBatch, GraphicsDevice graphics)
         {
             this.spriteBatch = spriteBatch;
+            this.graphics = graphics;
 
         }
 
@@ -168,12 +169,32 @@ namespace Profession
     public class ReturnManager  // Returns content
     {
         private static ContentManager Content;
-        public ReturnManager(ContentManager content)
+        private static GraphicsDeviceManager Graphics;
+        public ReturnManager(ContentManager content, GraphicsDeviceManager graphics)
         {
             Content = content;
+            Graphics = graphics;
         }
+
+        // Screen
+
+        public static int ReturnCenterWidthOfScreen() => Graphics.PreferredBackBufferWidth / 2;
+        public static int ReturnCenterHeightOfScreen() => Graphics.PreferredBackBufferHeight / 2;
+
+        // Content
         public static Texture2D LoadTexture(string name) => Content.Load<Texture2D>(name);
         public static SpriteFont LoadSpriteFont(string name) => Content.Load<SpriteFont>(name);
         public static Vector2 ReturnMiddleVector(SpriteFont sprite, string name) => sprite.MeasureString(name);
+
+        public static Texture2D TextureData(int width, int height, Color color, GraphicsDevice device)
+        {
+            Texture2D rect = new Texture2D(device, width, height);
+            Color[] data = new Color[width * height];
+
+            for (int i = 0; i < data.Length; i++) data[i] = color;
+            rect.SetData(data);
+
+            return rect;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Profession.Widgets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,13 @@ namespace Profession.Scenes
         private SpriteBatch spriteBatch;
         private GraphicsDevice device;
         private SpriteFont font;
+
+
+        private List<Button> Buttons = new List<Button>()
+        {
+          new Button(new Vector2(ReturnManager.ReturnCenterWidthOfScreen(),ReturnManager.ReturnCenterHeightOfScreen()), "Play", 300, 100, Color.White),
+        };
+
         public MainMenuScene(SpriteBatch spriteBatch, GraphicsDevice device)
         {
             this.spriteBatch = spriteBatch;
@@ -25,8 +33,7 @@ namespace Profession.Scenes
         {
             spriteBatch.Begin();
 
-
-            spriteBatch.DrawString(font, "Main Menu", new Vector2(200, 200), Color.White);
+            Buttons.ForEach(e => e.draw(spriteBatch, device));
 
             spriteBatch.End();
         }
